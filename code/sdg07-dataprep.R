@@ -52,7 +52,7 @@ tiers.ok <- left_join(tiers.long, pop.shares.ok, by = "iso3c")
 write.csv(tiers.ok, "../output/tiers.csv", row.names = FALSE)
 
 # Figure 4. Access vs emissions
-emis.raw <- read.csv('../input/historical_emissions_ciat.csv', na.strings = "N/A")
+emis.raw <- read.csv('../input/historical_emissions_ciat_updated.csv', na.strings = "FALSE")
 access.electricity.regions <- wb_data(indicator = c("EG.ELC.ACCS.ZS"), country = "regions_only")
 access.electricity.world <- wb_data(indicator = c("EG.ELC.ACCS.ZS"), country = "world")
 
