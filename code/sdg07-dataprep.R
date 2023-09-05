@@ -22,10 +22,10 @@ write.csv(access.all.ok, "../output/accessperc.csv", row.names = FALSE)
 
 access.rururb <- wb_data(indicator = c('EG.ELC.ACCS.RU.ZS', "EG.ELC.ACCS.UR.ZS"), country = "regions_only")
 access.rururb.ok <- select(access.rururb, iso3c, date, EG.ELC.ACCS.RU.ZS, EG.ELC.ACCS.UR.ZS) %>%
-  filter(date > 1999 & date < 2021)
+  filter(date > 1999 & date <= 2021)
 pop.rururb <- wb_data(indicator = c('SP.RUR.TOTL', 'SP.URB.TOTL'), country = "regions_only")
 pop.rururb.ok <- select(pop.rururb, iso3c, date, SP.RUR.TOTL, SP.URB.TOTL) %>%
-  filter(date > 1999 & date < 2021)
+  filter(date > 1999 & date <= 2021)
 access.pop <- left_join(access.rururb.ok, pop.rururb.ok, by = c("iso3c", "date")) %>%
   mutate(pop_without_urb = round(SP.URB.TOTL * (100 - EG.ELC.ACCS.UR.ZS)/100)) %>%
   mutate(pop_without_rur = round(SP.RUR.TOTL * (100 - EG.ELC.ACCS.RU.ZS)/100)) %>%
