@@ -16,7 +16,7 @@ access.all.ok <- select(access.all, -iso2c, -country) %>%
   rename(value = EG.ELC.ACCS.ZS) %>%
   filter(!is.na(value), date > 1999) %>%
   mutate(value = round(value, 1)) %>%
-  filter(date %% 2 == 0) %>%
+  #filter(date %% 2 == 0) %>%
   select(iso3c, date, value)
 write.csv(access.all.ok, "../output/accessperc.csv", row.names = FALSE)
 
