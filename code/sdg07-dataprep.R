@@ -136,4 +136,4 @@ sources.all.def <- rbind(sources.all.ok, sources.world) %>%
   pivot_wider(names_from = source, values_from = generation)
 sources.all.def[is.na(sources.all.def)] <- 0
 
-write.csv(sources.all.ok, "../output/electricitysources.csv", row.names = FALSE)
+write.csv(sources.all.def, "../output/electricitysources.csv", row.names = FALSE)
