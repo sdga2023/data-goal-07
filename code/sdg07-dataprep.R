@@ -68,7 +68,7 @@ pop.regions.ok <- rbind(pop.regions, pop.world) %>%
 country.regions <- select(countries, iso3c, region_iso3c)
 
 emis <- select(emis.raw, -Data.source, -Sector, -Gas, -Unit) %>%
-  pivot_longer(cols = 2:31, names_to = "year", values_to = "emissions") %>%
+  pivot_longer(cols = 3:33, names_to = "year", values_to = "emissions") %>%
   mutate(year = as.numeric(gsub("X", "", year))) %>%
   mutate(iso3c = countrycode(Country, origin = "country.name", destination = "iso3c")) %>%
   mutate(iso3c = if_else(Country == "World", "WLD", iso3c)) %>%
