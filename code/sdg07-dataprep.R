@@ -121,13 +121,16 @@ write.csv(access.pop.emis.ok, "../output/access_emissions.csv", row.names = FALS
 # Sheet "electricitysources" for Figure 5 --------------------------------------
 
 # Figure 5: Sources of electricity
-# Import
+
+# Import data from IRENASTAT
 offgrid <- read.csv("../input/offgrid.csv", na.strings = "..")
 ongrid <- read.csv("../input/ongrid.csv", na.strings = "..")
 sources.all <- rbind(offgrid, ongrid)
+
 # Recode energy sources
 sources.all.ok <- mutate(sources.all, Country.area = if_else(Country.area == "T<fc>rkiye", "Turkey", Country.area)) %>%
   mutate(iso3c = countrycode(Country.area, origin="country.name", destination="iso3c")) %>%
+  mutate(iso3c = if_else(Country.area == "Kosovo", "XKX", iso3c)) %>%
   filter(!is.na(Electricity.generation..GWh.)) %>%
   group_by(iso3c, Technology, Year) %>%
   summarise(generation = sum(Electricity.generation..GWh.)) %>%
@@ -156,14 +159,16 @@ sources.all.ok <- mutate(sources.all, Country.area = if_else(Country.area == "T<
   summarise(generation = sum(generation)) %>%
   rename(year = Year)
 
+# Aggregate everything to find world values
 sources.world <- group_by(sources.all.ok, year, source) %>%
   summarise(generation = sum(generation)) %>%
   mutate(iso3c = "WLD") %>%
   relocate(iso3c, .before = year)
 
+# Leave out 2022
 sources.all.def <- rbind(sources.all.ok, sources.world) %>%
   filter(!is.na(iso3c), year != 2022) %>%
   pivot_wider(names_from = source, values_from = generation)
 sources.all.def[is.na(sources.all.def)] <- 0
-
+# Export
 write.csv(sources.all.def, "../output/electricitysources.csv", row.names = FALSE)
