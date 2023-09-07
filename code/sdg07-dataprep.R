@@ -10,10 +10,12 @@ countries <- wb_countries()
 
 # Sheet "accessperc" for Figure 1 --------------------------------------
 
-access.electricity <- wb_data(indicator = c("EG.ELC.ACCS.ZS"))
+# Download access with API
+access.electricity <- wb_data(indicator = c("EG.ELC.ACCS.ZS"),country = "countries_only")
 access.electricity.world <- wb_data(indicator = c("EG.ELC.ACCS.ZS"), country = "WLD")
 access.electricity.regions <- wb_data(indicator = c("EG.ELC.ACCS.ZS"), country = "regions_only")
 access.all <-rbind(access.electricity, access.electricity.regions, access.electricity.world)
+# Reshape and filter
 access.all.ok <- select(access.all, -iso2c, -country) %>%
   #pivot_longer(cols = 3:5, names_to = "indicator", values_to = "value") %>%
   rename(value = EG.ELC.ACCS.ZS) %>%
